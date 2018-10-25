@@ -8,7 +8,7 @@ Particle::Particle(int baseX, int baseY,int maxLife)
 	this->baseY = baseY;
 	angle = random(60, 120);                           //角度随机生成
 	life = (30 -abs((90 - angle))) * maxLife / 30;     //偏离90度越远，生命越短
-	maxSize = 10;
+	maxSize = 3;
 	speed = 10;
 	colors.push_back(BGR(0xFFEC91));
 	colors.push_back(BGR(0xFCBA49));

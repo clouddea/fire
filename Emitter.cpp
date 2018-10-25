@@ -7,7 +7,7 @@ Emitter::Emitter(int baseX, int baseY)
 	this->baseX = baseX;
 	this->baseY = baseY;
 	srand((unsigned)time(NULL));
-	amount = 10;
+	amount = 20;
 }
 
 

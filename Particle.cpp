@@ -6,10 +6,11 @@ Particle::Particle(int baseX, int baseY,int maxLife)
 {
 	this->baseX = baseX;
 	this->baseY = baseY;
-	angle = random(60, 120);                           //角度随机生成
-	life = (30 -abs((90 - angle))) * maxLife / 30;     //偏离90度越远，生命越短
+	angle = random(30, 150);                           //角度随机生成
+	life = 60;
 	maxSize = 3;
-	speed = 10;
+	size = 3;
+	//speed = 10;
 	colors.push_back(BGR(0xFFEC91));
 	colors.push_back(BGR(0xFCBA49));
 	colors.push_back(BGR(0xE05E00));
@@ -34,7 +35,7 @@ void Particle::run()
 	
 	if (state < life) 
 	{
-		int temp = colors.size() * state / life;                //生命因素
+		/*int temp = colors.size() * state / life;                //生命因素
 		int temp2 = abs(angle - 90) * colors.size() / 30 - 1 ;  //角度因素
 		color = colors[temp > temp2? temp:temp2];               //颜色由两个因素决定
 		speed = 10;
@@ -47,7 +48,27 @@ void Particle::run()
 		int offset = sqrt(r*r - xr * xr)* ((dx > 0)? -1: 1);    //一个微调量
 		//int offset = 0;
 		y = baseY + dy;
-		x = baseX + dx + offset;
+		x = baseX + dx + offset;*/
+		double straightAngle = angle * pi / 180;
+		double si = sin(straightAngle);
+		double co = cos(straightAngle);
+		double p = (2 * state * si) / (8 * co * co + 1);
+		double offsetX = p * co;
+		double offsetY = p * si;
+		double windAngle = wind * pi / 180;
+		double 变动 = (offsetY / p);
+		double rotateAngle = 变动 * 变动 * 变动 * 变动 * 变动 * windAngle;
+		double sinRotate = sin(rotateAngle);
+		double cosRotate = cos(rotateAngle);
+		double offsetXRotate = cosRotate * offsetX - sinRotate * offsetY;
+		double offsetYRotate = sinRotate * offsetX + cosRotate * offsetY;
+		int disturbX = random(0, 5);
+		int influenceOfWind = (int)(((double)state / life) * wind);
+		x = (int)(baseX + offsetXRotate + disturbX);
+		y = (int)(baseY - offsetYRotate);
+		double colorChange = (double)state / life;
+		int gray =(int)(255 - (sqrt(colorChange) * 255));
+		color = RGB(gray, gray, gray);
 		state++;
 	}
 }

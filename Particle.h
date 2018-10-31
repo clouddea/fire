@@ -31,5 +31,7 @@ public:
 	void run();                     //每帧做的事
 	void draw(Image*);
 	bool isDead();                  //是否已经结束生命
+
+	int wind;                     //风力大小
 };
 
